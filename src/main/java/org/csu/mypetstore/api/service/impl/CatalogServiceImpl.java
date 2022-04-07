@@ -74,7 +74,7 @@ public class CatalogServiceImpl implements CatalogService {
             return CommonResponse.createForSuccessMessage("没有该ID的Product");
 
         QueryWrapper<Item> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("productid", productId);
+        queryWrapper.eq("productId", productId);
         List<Item> itemList = itemMapper.selectList(queryWrapper);
         if(itemList.isEmpty())
             return CommonResponse.createForSuccessMessage("该Product下没有Item");
@@ -86,6 +86,28 @@ public class CatalogServiceImpl implements CatalogService {
         }
 
         return CommonResponse.createForSuccess(itemVOList);
+    }
+
+    @Override
+    public CommonResponse<ItemVO> getItemById(String itemId) {
+        Item item = itemMapper.selectById(itemId);
+        if(item == null)
+            return CommonResponse.createForSuccessMessage("没有该ID的Item");
+        Product product = productMapper.selectById(item.getProductId());
+
+        ItemVO itemVO = itemToItemVO(item,product);
+        return CommonResponse.createForSuccess(itemVO);
+    }
+
+    @Override
+    public CommonResponse<List<Product>> searchProductsByKeywords(String keywords) {
+        //条件封装
+        QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like("name",keywords);
+        List<Product> productList = productMapper.selectList(queryWrapper);
+        if(productList.isEmpty())
+            return CommonResponse.createForSuccessMessage("未搜索到相关的商品");
+        return CommonResponse.createForSuccess(productList);
     }
 
     private ItemVO itemToItemVO(Item item,Product product){

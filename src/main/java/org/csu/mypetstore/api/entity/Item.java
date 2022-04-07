@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 public class Item {
     @TableId(value = "itemid", type = IdType.INPUT)
     private String itemId;
-    @TableField(value = "prductid")
+    @TableField(value = "productid")
     private String productId;
     @TableField(value = "listprice")
     private BigDecimal listPrice;

@@ -7,4 +7,8 @@ public interface AccountService {
     CommonResponse<AccountVO> getAccount(String username, String password);
 
     CommonResponse<AccountVO> getAccount(String username);
+
+    CommonResponse<AccountVO> updateAccount(AccountVO accountVO);
+
+    CommonResponse<AccountVO> insertAccount(String username, String password);
 }
