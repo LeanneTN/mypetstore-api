@@ -88,38 +88,6 @@
   }
   ```
 
-**/catalog/categories/{id}**
-
-> request
-
-```
-如：/catalog/categories/BIRDS
-```
-
-> response
-
-fail
-
-```
-{
-    "status": 1,
-    "msg": "服务器异常"
-}
-```
-
-success
-
-```
-{
-    "status": 0,
-    "data": {
-        "categoryId": "BIRDS",
-        "name": "Birds",
-        "description": "<image src=\"../images/birds_icon.gif\"><font size=\"5\" color=\"blue\"> Birds</font>"
-    }
-}
-```
-
 -------
 
 ### 3.获取某个Category分类下的所有Product信息
@@ -468,7 +436,7 @@ success
       }
   }
   ```
-  
+
 -----
 ### 3.查看已登录账号信息
 
@@ -685,13 +653,13 @@ success
 -------
 
 ## Cart
-### 1.获取Cart信息
+### 1.获取已登录账号的Cart
 
 **Request**
 
 - Method: **GET**
 
-- URL: **/cart/{username}**
+- URL: **/cart/myCart**
 
 - Parameters:
 
@@ -706,7 +674,7 @@ success
   ```
   {
       "status": 1,
-      "msg": "服务器异常"
+      "msg": "请先登录！"
   }
   ```
 
@@ -715,35 +683,49 @@ success
   ```
   {
       "status": 0,
-      "data": [
-          {
-              "itemList": [
-              	{
-              		CartItem...
-              	},
-              	{
-              		CartItem...
-              	}
-              ]
-          }
-      ]
+      "data": {
+          "itemList": [
+              {
+                  "itemId": "EST-14",
+                  "productId": "FL-DSH-01",
+                  "descn": "Tailless Manx",
+                  "inStock": true,
+                  "quantity": 2,
+                  "listPrice": 58.50,
+                  "totalPrice": 117.00,
+                  "buyerName": "aaa"
+              },
+              {
+                  "itemId": "EST-13",
+                  "productId": "RP-LI-02",
+                  "descn": "Green Adult Iguana",
+                  "inStock": true,
+                  "quantity": 2,
+                  "listPrice": 18.50,
+                  "totalPrice": 37.00,
+                  "buyerName": "aaa"
+              }
+          ]
+      }
   }
   ```
 
 -------
 
-### 1.获取Cart信息
+### 2.向已登录账号的购物车添加商品
 
 **Request**
 
-- Method: **GET**
+- Method: **POST**
 
-- URL: **/cart/{username}**
+- URL: **/cart/myCart**
 
 - Parameters:
 
   ```
-  
+  {
+  	itemId: "EST-14"
+  }
   ```
 
 **Response**
@@ -752,8 +734,8 @@ success
 
   ```
   {
-      "status": 1,
-      "msg": "服务器异常"
+      "status": 10,
+      "msg": "请先登录！"
   }
   ```
 
@@ -762,35 +744,49 @@ success
   ```
   {
       "status": 0,
-      "data": [
-          {
-              "itemList": [
-              	{
-              		CartItem...
-              	},
-              	{
-              		CartItem...
-              	}
-              ]
-          }
-      ]
+      "data": {
+          "itemList": [
+              {
+                  "itemId": "EST-14",
+                  "productId": "FL-DSH-01",
+                  "descn": "Tailless Manx",
+                  "inStock": true,
+                  "quantity": 7,
+                  "listPrice": 58.50,
+                  "totalPrice": 117.00,
+                  "buyerName": "aaa"
+              },
+              {
+                  "itemId": "EST-13",
+                  "productId": "RP-LI-02",
+                  "descn": "Green Adult Iguana",
+                  "inStock": true,
+                  "quantity": 2,
+                  "listPrice": 18.50,
+                  "totalPrice": 37.00,
+                  "buyerName": "aaa"
+              }
+          ]
+      }
   }
   ```
 
 -------
 
-### 1.获取Cart信息
+### 3.移除已登录账号购物车中的商品
 
 **Request**
 
-- Method: **GET**
+- Method: **DELETE**
 
-- URL: **/cart/{username}**
+- URL: **/cart/myCart/cartItems**
 
 - Parameters:
 
   ```
-  
+  {
+  	itemId: "EST-14"
+  }
   ```
 
 **Response**
@@ -799,8 +795,16 @@ success
 
   ```
   {
+      "status": 10,
+      "msg": "请先登录！"
+  }
+  
+  ```
+
+  ```
+  {
       "status": 1,
-      "msg": "服务器异常"
+      "msg": "购物车中没有该商品!"
   }
   ```
 
@@ -809,35 +813,40 @@ success
   ```
   {
       "status": 0,
-      "data": [
-          {
-              "itemList": [
-              	{
-              		CartItem...
-              	},
-              	{
-              		CartItem...
-              	}
-              ]
-          }
-      ]
+      "data": {
+          "itemList": [
+              {
+                  "itemId": "EST-13",
+                  "productId": "RP-LI-02",
+                  "descn": "Green Adult Iguana",
+                  "inStock": true,
+                  "quantity": 2,
+                  "listPrice": 18.50,
+                  "totalPrice": 37.00,
+                  "buyerName": "aaa"
+              }
+          ]
+      }
   }
   ```
 
 -------
 
-### 1.获取Cart信息
+### 4.更新已登录账号购物车中商品的数量
 
 **Request**
 
-- Method: **GET**
+- Method: **POST**
 
-- URL: **/cart/{username}**
+- URL: **/cart/myCart/cartItems**
 
 - Parameters:
 
   ```
-  
+  {
+  	itemId: "EST-13",
+  	quantity: 100	//请确保quantity是自然数
+  }
   ```
 
 **Response**
@@ -846,8 +855,15 @@ success
 
   ```
   {
+      "status": 10,
+      "msg": "请先登录！"
+  }
+  ```
+
+  ```
+  {
       "status": 1,
-      "msg": "服务器异常"
+      "msg": "购物车中没有该商品!"
   }
   ```
 
@@ -856,206 +872,30 @@ success
   ```
   {
       "status": 0,
-      "data": [
-          {
-              "itemList": [
-              	{
-              		CartItem...
-              	},
-              	{
-              		CartItem...
-              	}
-              ]
-          }
-      ]
-  }
-  ```
-
--------
-
-### 1.获取Cart信息
-
-**Request**
-
-- Method: **GET**
-
-- URL: **/cart/{username}**
-
-- Parameters:
-
-  ```
-  
-  ```
-
-**Response**
-
-- fail
-
-  ```
-  {
-      "status": 1,
-      "msg": "服务器异常"
-  }
-  ```
-
-- success
-
-  ```
-  {
-      "status": 0,
-      "data": [
-          {
-              "itemList": [
-              	{
-              		CartItem...
-              	},
-              	{
-              		CartItem...
-              	}
-              ]
-          }
-      ]
-  }
-  ```
-
--------
-
-### 1.获取Cart信息
-
-**Request**
-
-- Method: **GET**
-
-- URL: **/cart/{username}**
-
-- Parameters:
-
-  ```
-  
-  ```
-
-**Response**
-
-- fail
-
-  ```
-  {
-      "status": 1,
-      "msg": "服务器异常"
-  }
-  ```
-
-- success
-
-  ```
-  {
-      "status": 0,
-      "data": [
-          {
-              "itemList": [
-              	{
-              		CartItem...
-              	},
-              	{
-              		CartItem...
-              	}
-              ]
-          }
-      ]
-  }
-  ```
-
--------
-
-### 1.获取Cart信息
-
-**Request**
-
-- Method: **GET**
-
-- URL: **/cart/{username}**
-
-- Parameters:
-
-  ```
-  
-  ```
-
-**Response**
-
-- fail
-
-  ```
-  {
-      "status": 1,
-      "msg": "服务器异常"
-  }
-  ```
-
-- success
-
-  ```
-  {
-      "status": 0,
-      "data": [
-          {
-              "itemList": [
-              	{
-              		CartItem...
-              	},
-              	{
-              		CartItem...
-              	}
-              ]
-          }
-      ]
-  }
-  ```
-
--------
-
-### 1.获取Cart信息
-
-**Request**
-
-- Method: **GET**
-
-- URL: **/cart/{username}**
-
-- Parameters:
-
-  ```
-  
-  ```
-
-**Response**
-
-- fail
-
-  ```
-  {
-      "status": 1,
-      "msg": "服务器异常"
-  }
-  ```
-
-- success
-
-  ```
-  {
-      "status": 0,
-      "data": [
-          {
-              "itemList": [
-              	{
-              		CartItem...
-              	},
-              	{
-              		CartItem...
-              	}
-              ]
-          }
-      ]
+      "data": {
+          "itemList": [
+              {
+                  "itemId": "EST-13",
+                  "productId": "RP-LI-02",
+                  "descn": "Friendly green friend",
+                  "inStock": true,
+                  "quantity": 100,
+                  "listPrice": 18.50,
+                  "totalPrice": 18.50,
+                  "buyerName": "aaa"
+              },
+              {
+                  "itemId": "EST-14",
+                  "productId": "FL-DSH-01",
+                  "descn": "Great for reducing mouse populations",
+                  "inStock": true,
+                  "quantity": 2,
+                  "listPrice": 58.50,
+                  "totalPrice": 58.50,
+                  "buyerName": "aaa"
+              }
+          ]
+      }
   }
   ```
 

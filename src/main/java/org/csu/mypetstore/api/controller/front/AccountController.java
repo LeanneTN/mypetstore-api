@@ -103,7 +103,7 @@ public class AccountController {
     //判断用户名是否存在
     @PostMapping("username")
     @ResponseBody
-    public CommonResponse<AccountVO> username(@RequestParam String username){
+    public CommonResponse<AccountVO> username(@RequestParam("username") String username){
         CommonResponse<AccountVO> response = accountService.getAccount(username);
         return response;
     }

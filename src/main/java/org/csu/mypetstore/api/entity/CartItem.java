@@ -7,11 +7,11 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 @Data
-@TableName("cart")
-public class Cart {
+@TableName("cartitem")
+public class CartItem {
     @TableField(value = "itemid")
     private String itemId;
-    @TableField(value = "peoductid")
+    @TableField(value = "productid")
     private String productId;
     private String descn;
     @TableField(value = "instock")

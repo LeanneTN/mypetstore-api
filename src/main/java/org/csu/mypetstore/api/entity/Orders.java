@@ -1,6 +1,7 @@
 package org.csu.mypetstore.api.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -14,48 +15,48 @@ public class Orders {
     @TableId(value = "orderid", type = IdType.INPUT)
     private int orderId;
     private String username;
-    @TableId(value = "orderdate")
+    @TableField(value = "orderdate")
     private Date orderDate;
-    @TableId(value = "shipaddress1")
+    @TableField(value = "shipaddress1")
     private String shipAddress1;
-    @TableId(value = "shipaddress2")
+    @TableField(value = "shipaddress2")
     private String shipAddress2;
-    @TableId(value = "shipcity")
+    @TableField(value = "shipcity")
     private String shipCity;
-    @TableId(value = "shipstate")
+    @TableField(value = "shipstate")
     private String shipState;
-    @TableId(value = "shpizip")
+    @TableField(value = "shpizip")
     private String shipZip;
-    @TableId(value = "shipcountry")
+    @TableField(value = "shipcountry")
     private String shipCountry;
-    @TableId(value = "billaddress1")
+    @TableField(value = "billaddress1")
     private String billAddress1;
-    @TableId(value = "billaddress2")
+    @TableField(value = "billaddress2")
     private String billAddress2;
-    @TableId(value = "billcity")
+    @TableField(value = "billcity")
     private String billCity;
-    @TableId(value = "billstate")
+    @TableField(value = "billstate")
     private String billState;
-    @TableId(value = "billzip")
+    @TableField(value = "billzip")
     private String billZip;
-    @TableId(value = "billcountry")
+    @TableField(value = "billcountry")
     private String billCountry;
     private String courier;
-    @TableId(value = "totalprice")
+    @TableField(value = "totalprice")
     private BigDecimal totalPrice;
-    @TableId(value = "billtofirstname")
+    @TableField(value = "billtofirstname")
     private String billToFirstName;
-    @TableId(value = "billtolastname")
+    @TableField(value = "billtolastname")
     private String billToLastName;
-    @TableId(value = "shiptofirstname")
+    @TableField(value = "shiptofirstname")
     private String shipToFirstName;
-    @TableId(value = "billtolastname")
+    @TableField(value = "billtolastname")
     private String shipToLastName;
-    @TableId(value = "creditcard")
+    @TableField(value = "creditcard")
     private String creditCard;
-    @TableId(value = "expirydate")
+    @TableField(value = "expirydate")
     private String expiryDate;
-    @TableId(value = "cardtype")
+    @TableField(value = "cardtype")
     private String cardType;
     private String locale;
 }

@@ -1,8 +1,11 @@
 package org.csu.mypetstore.api.vo;
 
+import lombok.Data;
+import org.csu.mypetstore.api.entity.CartItem;
+
 import java.util.*;
 
+@Data
 public class CartVO {
-    private Map<String, CartItemVO> itemMap = Collections.synchronizedMap(new HashMap<String, CartItemVO>());
-    private List<CartItemVO> itemList = new ArrayList<CartItemVO>();
+    private List<CartItem> itemList = new ArrayList<CartItem>();
 }

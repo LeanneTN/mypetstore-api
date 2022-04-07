@@ -4,8 +4,6 @@ import org.csu.mypetstore.api.common.CommonResponse;
 import org.csu.mypetstore.api.entity.Category;
 import org.csu.mypetstore.api.entity.Product;
 import org.csu.mypetstore.api.vo.ItemVO;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
