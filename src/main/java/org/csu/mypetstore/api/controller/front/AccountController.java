@@ -1,23 +1,54 @@
 package org.csu.mypetstore.api.controller.front;
 
+import com.google.code.kaptcha.Constants;
+import com.google.code.kaptcha.Producer;
 import org.csu.mypetstore.api.common.CommonResponse;
 import org.csu.mypetstore.api.common.ResponseCode;
 import org.csu.mypetstore.api.service.AccountService;
 import org.csu.mypetstore.api.vo.AccountVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.imageio.ImageIO;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.awt.image.BufferedImage;
+
+import static com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY;
 
 @Controller
 @RequestMapping("/user/")
 public class AccountController {
     @Autowired
     private AccountService accountService;
+    @Autowired
+    private Producer kaptchaProducer;
+
+    //获取、切换并显示验证码
+    @RequestMapping("/kaptcha")
+    public void getKaptchaImage(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession();
+        response.setDateHeader("Expires", 0);
+        response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+        response.addHeader("Cache-Control", "post-check=0, pre-check=0");
+        response.setHeader("Pragma", "no-cache");
+        response.setContentType("image/jpeg");
+        //生成验证码
+        String capText = kaptchaProducer.createText();
+        session.setAttribute(KAPTCHA_SESSION_KEY, capText);
+        //向客户端写出
+        BufferedImage bi = kaptchaProducer.createImage(capText);
+        ServletOutputStream out = response.getOutputStream();
+        ImageIO.write(bi, "jpg", out);
+        try {
+            out.flush();
+        } finally {
+            out.close();
+        }
+    }
 
     //登录
     @PostMapping("login")
@@ -25,11 +56,22 @@ public class AccountController {
     public CommonResponse<AccountVO> login(
             HttpSession session,
             @RequestParam("username") String username,
-            @RequestParam("password") String password){
-        CommonResponse<AccountVO> response = accountService.getAccount(username, password);
-        if(response.isSuccess())
-            session.setAttribute("login_account", response.getData());
-        return response;
+            @RequestParam("password") String password,
+            @RequestParam("code") String code){
+        //获取session中的验证码
+        String token =(String) session.getAttribute(KAPTCHA_SESSION_KEY);
+        //删除验证码防止重复操作
+        session.removeAttribute(KAPTCHA_SESSION_KEY);
+
+        //验证码正确再进行下一步操作
+        if(token.equals(code)){
+            CommonResponse<AccountVO> response = accountService.getAccount(username, password);
+            if(response.isSuccess())
+                session.setAttribute("login_account", response.getData());
+            return response;
+        }else{
+            return CommonResponse.createForError(ResponseCode.CODE_ERROR.getCode(), "验证码错误！");
+        }
     }
 
     //注册
@@ -40,8 +82,18 @@ public class AccountController {
             @RequestParam("username") String username,
             @RequestParam("password") String password,
             @RequestParam("code") String code){
-        CommonResponse<AccountVO> response = accountService.insertAccount(username, password);
-        return response;
+        //获取session中的验证码
+        String token =(String) session.getAttribute(KAPTCHA_SESSION_KEY);
+        //删除验证码防止重复操作
+        session.removeAttribute(KAPTCHA_SESSION_KEY);
+
+        //验证码正确再进行下一步操作
+        if(token.equals(code)){
+            CommonResponse<AccountVO> response = accountService.insertAccount(username, password);
+            return response;
+        }else{
+            return CommonResponse.createForError(ResponseCode.CODE_ERROR.getCode(), "验证码错误！");
+        }
     }
 
     //查看账号信息

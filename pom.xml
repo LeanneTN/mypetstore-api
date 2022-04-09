@@ -43,10 +43,18 @@
             <version>3.5.1</version>
         </dependency>
 
+        <!--联合主键-->
         <dependency>
             <groupId>com.github.jeffreyning</groupId>
             <artifactId>mybatisplus-plus</artifactId>
             <version>1.2.0-RELEASE</version>
+        </dependency>
+
+        <!--图片验证码-->
+        <dependency>
+            <groupId>com.github.penggle</groupId>
+            <artifactId>kaptcha</artifactId>
+            <version>2.3.2</version>
         </dependency>
     </dependencies>
 
