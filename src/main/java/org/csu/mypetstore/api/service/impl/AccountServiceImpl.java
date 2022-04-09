@@ -80,12 +80,8 @@ public class AccountServiceImpl implements AccountService {
         profile.setLanguagePreference(accountVO.getLanguagePreference());
         profile.setListOption(accountVO.isListOption());
 
-        bannerData.setBannerName(accountVO.getBannerName());
-        bannerData.setFavouriteCategoryId(accountVO.getFavouriteCategoryId());
-
         accountMapper.updateById(account);
         profileMapper.updateById(profile);
-        bannerDataMapper.updateById(bannerData);
 
         return CommonResponse.createForSuccess(accountVO);
     }

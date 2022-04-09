@@ -11,6 +11,6 @@ import lombok.Data;
 public class Sequence {
     @TableId(value = "name", type = IdType.INPUT)
     private String name;
-    @TableField(value = "nexid")
+    @TableField(value = "nextid")
     private int nextId;
 }

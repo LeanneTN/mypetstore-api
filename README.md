@@ -904,13 +904,99 @@
 
 ## Order
 
-### 1.获取Cart信息
+### 1.生成订单，清空购物车
+
+**Request**
+
+- Method: **POST**
+
+- URL: **/order/orders/newOrder**
+
+- Parameters:
+
+  ```
+  {
+  	expiryDate: "2022-05-01",
+  	billToFirstName: "张",
+  	creditCard: "123456",
+  	billToLastName: "三",
+  	billAddress1: "CS",
+  	billAddress2: "CSU",
+  	billCity: "CS",
+  	billState: "HN",
+  	billZip: "123456",
+  	billCountry: "CN",
+  	cardType: "Visa",
+  	shippingAddressRequired: false,
+  	//以下参数是可选的，当shippingAddressRequired为true时需要传递
+  	shipToFirstName: "张"
+      shipToLastName: "三"
+      shipAddress1: "xxx"
+      shipAddress2:  "xxx"
+      shipCity: "xxx"
+      shipState: "xxx"
+      shipZip: "xxx"
+      shipCountry: "xxx"
+  }
+  ```
+
+**Response**
+
+- fail
+
+  ```
+  {
+      "status": 10,
+      "msg": "请先登录！"
+  }
+  ```
+
+- success
+
+  ```
+  {
+      "status": 0,
+      "data": {
+          "orderId": 1002,
+          "username": "aaa",
+          "orderDate": "2022-04-09T06:33:50.877+00:00",
+          "shipAddress1": "CS",
+          "shipAddress2": "CSU",
+          "shipCity": "CS",
+          "shipState": "HN",
+          "shipZip": "123456",
+          "shipCountry": "CN",
+          "billAddress1": "CS",
+          "billAddress2": "CSU",
+          "billCity": "CS",
+          "billState": "HN",
+          "billZip": "123456",
+          "billCountry": "CN",
+          "courier": "UPS",
+          "totalPrice": 105.50,
+          "billToFirstName": "张",
+          "billToLastName": "三",
+          "shipToFirstName": "张",
+          "shipToLastName": "三",
+          "creditCard": "123456",
+          "expiryDate": "2022-05-01",
+          "cardType": "Visa",
+          "locale": "CSU",
+          "status": "待发货",
+          "timestamp": "2022-04-09T06:33:50.877+00:00"
+      }
+  }
+  ```
+
+-------
+
+### 2.获取已登录账号的订单
 
 **Request**
 
 - Method: **GET**
 
-- URL: **/cart/{username}**
+- URL: **/order/orders**
 
 - Parameters:
 
@@ -924,8 +1010,12 @@
 
   ```
   {
+      "status": 10,
+      "msg": "请先登录！"
+  }
+  {
       "status": 1,
-      "msg": "服务器异常"
+      "msg": "订单未为空！"
   }
   ```
 
@@ -936,14 +1026,62 @@
       "status": 0,
       "data": [
           {
-              "itemList": [
-              	{
-              		CartItem...
-              	},
-              	{
-              		CartItem...
-              	}
-              ]
+              "orderId": 1001,
+              "username": "aaa",
+              "orderDate": "2022-04-09T06:03:53.000+00:00",
+              "shipAddress1": "CS",
+              "shipAddress2": "CSU",
+              "shipCity": "CS",
+              "shipState": "HN",
+              "shipZip": "123456",
+              "shipCountry": "CN",
+              "billAddress1": "CS",
+              "billAddress2": "CSU",
+              "billCity": "CS",
+              "billState": "HN",
+              "billZip": "123456",
+              "billCountry": "CN",
+              "courier": "UPS",
+              "totalPrice": 82.00,
+              "billToFirstName": "张",
+              "billToLastName": "三",
+              "shipToFirstName": "张",
+              "shipToLastName": "三",
+              "creditCard": "123456",
+              "expiryDate": "2022-05-01",
+              "cardType": "Visa",
+              "locale": "CSU",
+              "status": "待发货",
+              "timestamp": "2022-04-09T06:03:53.000+00:00"
+          },
+          {
+              "orderId": 1002,
+              "username": "aaa",
+              "orderDate": "2022-04-09T06:33:51.000+00:00",
+              "shipAddress1": "CS",
+              "shipAddress2": "CSU",
+              "shipCity": "CS",
+              "shipState": "HN",
+              "shipZip": "123456",
+              "shipCountry": "CN",
+              "billAddress1": "CS",
+              "billAddress2": "CSU",
+              "billCity": "CS",
+              "billState": "HN",
+              "billZip": "123456",
+              "billCountry": "CN",
+              "courier": "UPS",
+              "totalPrice": 105.50,
+              "billToFirstName": "张",
+              "billToLastName": "三",
+              "shipToFirstName": "张",
+              "shipToLastName": "三",
+              "creditCard": "123456",
+              "expiryDate": "2022-05-01",
+              "cardType": "Visa",
+              "locale": "CSU",
+              "status": "待发货",
+              "timestamp": "2022-04-09T06:33:51.000+00:00"
           }
       ]
   }
@@ -951,13 +1089,13 @@
 
 -------
 
-### 1.获取Cart信息
+### 3.根据订单号获取订单
 
 **Request**
 
 - Method: **GET**
 
-- URL: **/cart/{username}**
+- URL: **/order/orders/{orderId}**
 
 - Parameters:
 
@@ -971,8 +1109,12 @@
 
   ```
   {
-      "status": 1,
-      "msg": "服务器异常"
+      "status": 10,
+      "msg": "请先登录！"
+  }
+  {
+  	"status": 1,
+      "msg": "您查询的订单不存在！"
   }
   ```
 
@@ -981,30 +1123,47 @@
   ```
   {
       "status": 0,
-      "data": [
-          {
-              "itemList": [
-              	{
-              		CartItem...
-              	},
-              	{
-              		CartItem...
-              	}
-              ]
-          }
-      ]
+      "data": {
+          "orderId": 1002,
+          "username": "aaa",
+          "orderDate": "2022-04-09T06:33:51.000+00:00",
+          "shipAddress1": "CS",
+          "shipAddress2": "CSU",
+          "shipCity": "CS",
+          "shipState": "HN",
+          "shipZip": "123456",
+          "shipCountry": "CN",
+          "billAddress1": "CS",
+          "billAddress2": "CSU",
+          "billCity": "CS",
+          "billState": "HN",
+          "billZip": "123456",
+          "billCountry": "CN",
+          "courier": "UPS",
+          "totalPrice": 105.50,
+          "billToFirstName": "张",
+          "billToLastName": "三",
+          "shipToFirstName": "张",
+          "shipToLastName": "三",
+          "creditCard": "123456",
+          "expiryDate": "2022-05-01",
+          "cardType": "Visa",
+          "locale": "CSU",
+          "status": "待发货",
+          "timestamp": "2022-04-09T06:33:51.000+00:00"
+      }
   }
   ```
 
 -------
 
-### 1.获取Cart信息
+### 4.根据订单号获取该订单购买的商品
 
 **Request**
 
 - Method: **GET**
 
-- URL: **/cart/{username}**
+- URL: **/order/orders/{orderId}/items**
 
 - Parameters:
 
@@ -1018,8 +1177,12 @@
 
   ```
   {
-      "status": 1,
-      "msg": "服务器异常"
+      "status": 10,
+      "msg": "请先登录！"
+  }
+  {
+  	"status": 1,
+      "msg": "您查询的订单不存在！"
   }
   ```
 
@@ -1030,61 +1193,18 @@
       "status": 0,
       "data": [
           {
-              "itemList": [
-              	{
-              		CartItem...
-              	},
-              	{
-              		CartItem...
-              	}
-              ]
-          }
-      ]
-  }
-  ```
-
--------
-
-### 1.获取Cart信息
-
-**Request**
-
-- Method: **GET**
-
-- URL: **/cart/{username}**
-
-- Parameters:
-
-  ```
-  
-  ```
-
-**Response**
-
-- fail
-
-  ```
-  {
-      "status": 1,
-      "msg": "服务器异常"
-  }
-  ```
-
-- success
-
-  ```
-  {
-      "status": 0,
-      "data": [
+              "orderId": 1002,
+              "lineNumber": 1003,
+              "itemId": "EST-15",
+              "quantity": 2,
+              "unitPrice": 23.50
+          },
           {
-              "itemList": [
-              	{
-              		CartItem...
-              	},
-              	{
-              		CartItem...
-              	}
-              ]
+              "orderId": 1002,
+              "lineNumber": 1004,
+              "itemId": "EST-14",
+              "quantity": 1,
+              "unitPrice": 58.50
           }
       ]
   }
@@ -1092,143 +1212,3 @@
 
 -------
 
-### 1.获取Cart信息
-
-**Request**
-
-- Method: **GET**
-
-- URL: **/cart/{username}**
-
-- Parameters:
-
-  ```
-  
-  ```
-
-**Response**
-
-- fail
-
-  ```
-  {
-      "status": 1,
-      "msg": "服务器异常"
-  }
-  ```
-
-- success
-
-  ```
-  {
-      "status": 0,
-      "data": [
-          {
-              "itemList": [
-              	{
-              		CartItem...
-              	},
-              	{
-              		CartItem...
-              	}
-              ]
-          }
-      ]
-  }
-  ```
-
--------
-
-### 1.获取Cart信息
-
-**Request**
-
-- Method: **GET**
-
-- URL: **/cart/{username}**
-
-- Parameters:
-
-  ```
-  
-  ```
-
-**Response**
-
-- fail
-
-  ```
-  {
-      "status": 1,
-      "msg": "服务器异常"
-  }
-  ```
-
-- success
-
-  ```
-  {
-      "status": 0,
-      "data": [
-          {
-              "itemList": [
-              	{
-              		CartItem...
-              	},
-              	{
-              		CartItem...
-              	}
-              ]
-          }
-      ]
-  }
-  ```
-
--------
-
-### 1.获取Cart信息
-
-**Request**
-
-- Method: **GET**
-
-- URL: **/cart/{username}**
-
-- Parameters:
-
-  ```
-  
-  ```
-
-**Response**
-
-- fail
-
-  ```
-  {
-      "status": 1,
-      "msg": "服务器异常"
-  }
-  ```
-
-- success
-
-  ```
-  {
-      "status": 0,
-      "data": [
-          {
-              "itemList": [
-              	{
-              		CartItem...
-              	},
-              	{
-              		CartItem...
-              	}
-              ]
-          }
-      ]
-  }
-  ```
-
--------

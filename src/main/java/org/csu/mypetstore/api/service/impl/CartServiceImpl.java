@@ -98,6 +98,13 @@ public class CartServiceImpl implements CartService {
         return getCart(username);
     }
 
+    @Override
+    public void clearCart(String username) {
+        QueryWrapper<CartItem> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("buyerName", username);
+        cartItemMapper.delete(queryWrapper);
+    }
+
     public CartItem itemVOToCartItem(ItemVO itemVO, String buyerName){
         CartItem cartItem = new CartItem();
 

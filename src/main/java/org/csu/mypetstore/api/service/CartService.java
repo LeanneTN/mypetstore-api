@@ -14,4 +14,6 @@ public interface CartService {
     public CommonResponse<CartVO> removeCartItem(String username, String itemId);
 
     public CommonResponse<CartVO> updateQuantity(String username, String itemId, int quantity);
+
+    public void clearCart(String username);
 }

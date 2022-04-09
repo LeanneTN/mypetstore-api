@@ -11,7 +11,7 @@ import java.util.Date;
 
 @Data
 @TableName("orders")
-public class Orders {
+public class Order {
     @TableId(value = "orderid", type = IdType.INPUT)
     private int orderId;
     private String username;
@@ -25,7 +25,7 @@ public class Orders {
     private String shipCity;
     @TableField(value = "shipstate")
     private String shipState;
-    @TableField(value = "shpizip")
+    @TableField(value = "shipzip")
     private String shipZip;
     @TableField(value = "shipcountry")
     private String shipCountry;
@@ -50,7 +50,7 @@ public class Orders {
     private String billToLastName;
     @TableField(value = "shiptofirstname")
     private String shipToFirstName;
-    @TableField(value = "billtolastname")
+    @TableField(value = "shiptolastname")
     private String shipToLastName;
     @TableField(value = "creditcard")
     private String creditCard;
@@ -59,4 +59,6 @@ public class Orders {
     @TableField(value = "cardtype")
     private String cardType;
     private String locale;
+    private String status;
+    private Date timestamp;
 }
