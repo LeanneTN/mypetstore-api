@@ -1,6 +1,7 @@
 package org.csu.mypetstore.api.service;
 
 import org.csu.mypetstore.api.common.CommonResponse;
+import org.csu.mypetstore.api.entity.Account;
 import org.csu.mypetstore.api.vo.AccountVO;
 
 public interface AccountService {
@@ -11,4 +12,6 @@ public interface AccountService {
     CommonResponse<AccountVO> updateAccount(AccountVO accountVO);
 
     CommonResponse<AccountVO> insertAccount(String username, String password);
+
+    CommonResponse<AccountVO> getAccountByPhone(String phoneNumber);
 }

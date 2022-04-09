@@ -46,6 +46,7 @@ public class AccountServiceImpl implements AccountService {
         Account account = accountMapper.selectById(username);
         if(account == null)
             return CommonResponse.createForError("用户名不存在");
+
         Profile profile = profileMapper.selectById(username);
         BannerData bannerData = bannerDataMapper.selectById(profile.getFavouriteCategoryId());
 
@@ -59,7 +60,6 @@ public class AccountServiceImpl implements AccountService {
         //首先将AccountVO转成Account、Profile、BannerData
         Account account = new Account();
         Profile profile = new Profile();
-        BannerData bannerData = new BannerData();
 
         account.setUsername(accountVO.getUsername());
         account.setEmail(accountVO.getEmail());
@@ -89,7 +89,7 @@ public class AccountServiceImpl implements AccountService {
     //插入账号
     @Override
     public CommonResponse<AccountVO> insertAccount(String username, String password) {
-        CommonResponse<AccountVO> response = this.getAccount(username);
+        CommonResponse<AccountVO> response = getAccount(username);
         //用户名已经存在
         if(response.isSuccess())
             return CommonResponse.createForError("用户名已存在");
@@ -111,6 +111,21 @@ public class AccountServiceImpl implements AccountService {
         signOnMapper.insert(signOn);
 
         AccountVO accountVO = entityToVO(account, profile, null);
+        return CommonResponse.createForSuccess(accountVO);
+    }
+
+    @Override
+    public CommonResponse<AccountVO> getAccountByPhone(String phoneNumber) {
+        QueryWrapper<Account> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("phone", phoneNumber);
+        Account account = accountMapper.selectOne(queryWrapper);
+        if(account == null)
+            return CommonResponse.createForError("用户不存在！");
+
+        Profile profile = profileMapper.selectById(account.getUsername());
+        BannerData bannerData = bannerDataMapper.selectById(profile.getFavouriteCategoryId());
+
+        AccountVO accountVO = entityToVO(account, profile, bannerData);
         return CommonResponse.createForSuccess(accountVO);
     }
 

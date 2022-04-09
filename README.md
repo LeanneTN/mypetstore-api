@@ -342,7 +342,7 @@
 
 ## Account
 
-### 1.登录
+### 1.账号密码登录
 
 **Request**
 
@@ -354,8 +354,9 @@
 
   ```
   {
-  	username, 
-  	password
+  	username: "aaa", 
+  	password: "123",
+  	code: "1234"
   }
   ```
 
@@ -368,14 +369,36 @@
       "status": 1,
       "msg": "用户名或密码不正确"
   }
+  {
+      "status": 101,
+      "msg": "验证码错误！"
+  }
   ```
 
 - success
 
   ```
   {
-  	"status": 0,
-  	"data": {Account}
+      "status": 0,
+      "data": {
+          "username": "aaa",
+          "email": "123456@qq.com",
+          "firstName": "张",
+          "lastName": "三",
+          "status": null,
+          "address1": "CS",
+          "address2": "CSU",
+          "city": "CS",
+          "state": "HN",
+          "zip": "123456",
+          "country": "CN",
+          "phone": "13213761071",
+          "favouriteCategoryId": "DOGS",
+          "languagePreference": "English",
+          "listOption": true,
+          "bannerOption": true,
+          "bannerName": "<image src=\"../images/banner_dogs.gif\">"
+      }
   }
   ```
 
@@ -393,9 +416,9 @@
 
   ```
   {
-  	username, 
-  	password,
-  	code
+  	username: "aaa", 
+  	password: "123",
+  	code: "1234"
   }
   ```
 
@@ -407,6 +430,10 @@
   {
       "status": 1,
       "msg": "用户名已存在"
+  }
+  {
+      "status": 101,
+      "msg": "验证码错误！"
   }
   ```
 
@@ -438,7 +465,143 @@
   ```
 
 -----
-### 3.查看已登录账号信息
+### 3.获取验证码图片
+
+**Request**
+
+- Method: **无**
+
+- URL: /user/kaptcha
+
+- Parameters:
+
+  ```
+  
+  ```
+
+**Response**
+
+- fail
+
+  ```
+  
+  ```
+
+- success
+
+  ```
+  
+  ```
+
+-------
+
+### 4.获取手机验证码
+
+**Request**
+
+- Method: **POST**
+
+- URL: /user/phoneCode
+
+- Parameters:
+
+  ```
+  {
+  	phoneNumber: "13213761071"
+  }
+  ```
+
+**Response**
+
+- fail
+
+  ```
+  {
+      "status": 101,
+      "msg": "发送验证码失败！"
+  }
+  ```
+
+- success
+
+  ```
+  {
+  	"status": 0,
+  	"msg":"已成功发送验证码！"
+  }
+  ```
+
+
+------
+
+### 5.手机验证码登录
+
+**Request**
+
+- Method: **POST**
+
+- URL: /user/phoneLogin
+
+- Parameters:
+
+  ```
+  {
+  	phoneNumber: "13213761071",
+  	phoneCode: "90987"
+  }
+  ```
+
+**Response**
+
+- fail
+
+  ```
+  {
+      "status": 1,
+      "msg": "系统异常！"
+  }
+  {
+  	"status": 1,
+      "msg": "用户不存在！"
+  }
+  {
+      "status": 101,
+      "msg": "验证码错误！"
+  }
+  ```
+
+- success
+
+  ```
+  {
+      "status": 0,
+      "data": {
+          "username": "aaa",
+          "email": "123456@qq.com",
+          "firstName": "张",
+          "lastName": "三",
+          "status": null,
+          "address1": "CS",
+          "address2": "CSU",
+          "city": "CS",
+          "state": "HN",
+          "zip": "123456",
+          "country": "CN",
+          "phone": "13213761071",
+          "favouriteCategoryId": "DOGS",
+          "languagePreference": "English",
+          "listOption": true,
+          "bannerOption": true,
+          "bannerName": "<image src=\"../images/banner_dogs.gif\">"
+      }
+  }
+  ```
+
+
+-----
+
+
+### 6.查看已登录账号信息
 
 **Request**
 
@@ -492,7 +655,7 @@
 
 -----
 
-### 4.更改已登录账号信息
+### 7.更改已登录账号信息
 
 **Request**
 
@@ -560,7 +723,7 @@
   ```
 
 -----
-### 5.判断用户名
+### 8.判断用户名
 
 **Request**
 
@@ -616,7 +779,7 @@
 -----
 
 
-### 6.退出已登录的账号
+### 9.退出已登录的账号
 
 **Request**
 
