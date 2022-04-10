@@ -1,12 +1,10 @@
 package org.csu.mypetstore.api.controller.front;
 
 import com.alibaba.fastjson.JSONObject;
-import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
 import com.zhenzi.sms.ZhenziSmsClient;
 import org.csu.mypetstore.api.common.CommonResponse;
 import org.csu.mypetstore.api.common.ResponseCode;
-import org.csu.mypetstore.api.entity.Account;
 import org.csu.mypetstore.api.service.AccountService;
 import org.csu.mypetstore.api.vo.AccountVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -270,6 +268,4 @@ public class AccountController {
         session.removeAttribute("login_account");
         return CommonResponse.createForSuccessMessage("退出成功！");
     }
-
-
 }
