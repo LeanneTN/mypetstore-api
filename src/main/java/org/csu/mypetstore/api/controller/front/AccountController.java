@@ -203,7 +203,7 @@ public class AccountController {
     public CommonResponse<AccountVO> login(HttpSession session){
         AccountVO loginAccount = (AccountVO) session.getAttribute("login_account");
         if(loginAccount == null)
-            return CommonResponse.createForError(ResponseCode.NEED_LOGIN.getCode(), "请先登录！");
+            return CommonResponse.createForError(ResponseCode.NOT_LOGIN.getCode(), "未登录！");
         return CommonResponse.createForSuccess(loginAccount);
     }
 
