@@ -16,6 +16,7 @@ import org.csu.mypetstore.api.vo.ItemVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service("cartService")
@@ -61,6 +62,7 @@ public class CartServiceImpl implements CartService {
         //用户购物车中已有该商品
         else{
             cartItem.setQuantity(cartItem.getQuantity() + 1);
+            cartItem.setTotalPrice(cartItem.getTotalPrice().add(cartItem.getListPrice()));
             cartItemMapper.update(cartItem, queryWrapper);
         }
 

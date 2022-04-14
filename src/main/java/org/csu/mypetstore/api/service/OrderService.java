@@ -1,6 +1,7 @@
 package org.csu.mypetstore.api.service;
 
 import org.csu.mypetstore.api.common.CommonResponse;
+import org.csu.mypetstore.api.entity.CartItem;
 import org.csu.mypetstore.api.entity.LineItem;
 import org.csu.mypetstore.api.entity.Order;
 import org.csu.mypetstore.api.vo.CartVO;

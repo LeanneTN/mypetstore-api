@@ -13,6 +13,7 @@ import org.csu.mypetstore.api.vo.CartVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service("orderService")
@@ -36,6 +37,7 @@ public class OrderServiceImpl implements OrderService {
         return sequence.getNextId();
     }
 
+    //生成新的订单并清空购物车，返回
     @Override
     public CommonResponse<Order> newOrder(Order order, CartVO cartVO) {
         orderMapper.insert(order);
@@ -106,8 +108,10 @@ public class OrderServiceImpl implements OrderService {
         lineItem.setOrderId(orderInfo.getOrderId());
         lineItem.setItemId(cartItem.getItemId());
         lineItem.setQuantity(cartItem.getQuantity());
-        lineItem.setUnitPrice(cartItem.getTotalPrice());
+        lineItem.setListPrice(cartItem.getListPrice());
+        lineItem.setTotalPrice(cartItem.getTotalPrice());
         lineItem.setLineNumber(orderInfo.getLineNum());
+        lineItem.setDescn(cartItem.getDescn());
 
         return lineItem;
     }

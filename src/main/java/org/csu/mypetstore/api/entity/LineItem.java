@@ -21,7 +21,9 @@ public class LineItem {
     @TableField(value = "itemid")
     private String itemId;
     private int quantity;
-    @TableField(value = "unitprice")
-    private BigDecimal unitPrice;
-
+    @TableField(value = "listprice")
+    private BigDecimal listPrice;
+    private String descn;
+    @TableField(value = "totalprice")
+    private BigDecimal totalPrice;
 }
