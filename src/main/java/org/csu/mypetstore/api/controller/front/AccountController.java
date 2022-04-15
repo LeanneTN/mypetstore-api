@@ -109,8 +109,11 @@ public class AccountController {
             session.removeAttribute("code_info");
 
             //用户输入的验证码正确，登陆成功
-            if(accountVO.getPhone() !=null && phoneCodeSend.equals(phoneCode))
+            if(accountVO.getPhone() !=null && phoneCodeSend.equals(phoneCode)){
+                session.setAttribute("login_account", accountVO);
                 return CommonResponse.createForSuccess(accountVO);
+            }
+
             //用户输入的验证码不正确
             else
                 return CommonResponse.createForError(ResponseCode.CODE_ERROR.getCode(), "验证码错误！");

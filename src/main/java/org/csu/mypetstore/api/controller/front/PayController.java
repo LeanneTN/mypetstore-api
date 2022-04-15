@@ -21,8 +21,7 @@ import java.nio.charset.StandardCharsets;
 
 @RestController
 public class PayController {
-    @PostMapping("/pay")
-    @ResponseBody
+    @RequestMapping("/pay")
     public void payController(
             HttpServletRequest request,
             HttpServletResponse response,
