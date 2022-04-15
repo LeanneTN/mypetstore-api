@@ -1182,7 +1182,7 @@
   }
   {
       "status": 1,
-      "msg": "订单未为空！"
+      "msg": "订单为空！"
   }
   ```
 
@@ -1360,18 +1360,22 @@
       "status": 0,
       "data": [
           {
-              "orderId": 1002,
-              "lineNumber": 1003,
-              "itemId": "EST-15",
+              "orderId": 1005,
+              "lineNumber": 1007,
+              "itemId": "EST-14",
               "quantity": 2,
-              "unitPrice": 23.50
+              "listPrice": 58.50,
+              "descn": "Great for reducing mouse populations",
+              "totalPrice": 117.00
           },
           {
-              "orderId": 1002,
-              "lineNumber": 1004,
-              "itemId": "EST-14",
-              "quantity": 1,
-              "unitPrice": 58.50
+              "orderId": 1005,
+              "lineNumber": 1008,
+              "itemId": "EST-15",
+              "quantity": 2,
+              "listPrice": 23.50,
+              "descn": "Great for reducing mouse populations",
+              "totalPrice": 47.00
           }
       ]
   }
