@@ -40,11 +40,11 @@ CREATE TABLE `account` (
 /*Data for the table `account` */
 
 insert  into `account`(`userid`,`password`,`email`,`firstname`,`lastname`,`status`,`addr1`,`addr2`,`city`,`state`,`zip`,`country`,`phone`) values 
-('123','fcea920f7412b5da7be0cf42b8c93759','5@qq.com','HS','Hello',NULL,'World','','','','','China','18390825940'),
+('123','fcea920f7412b5da7be0cf42b8c93759','5@qq.com','HS','Hello',NULL,'World','','','','','China','123'),
 ('22','e10adc3949ba59abbe56e057f20f883e','678@qq.com','KK','Jack',NULL,'UAS','','CS','','65554','China','123456'),
 ('23','e10adc3949ba59abbe56e057f20f883e','123456@.com','Hello','Kei',NULL,'长沙','中南大学','长沙','湖南','123456','USA','46546'),
-('aaa','123','123456@qq.com','张','三',NULL,'CS','CSU','CS','HN','123456','CN','123456'),
-('j2ee','e10adc3949ba59abbe56e057f20f883e','yourname@yourdomain.com','j2ee','XYX',NULL,'901 San Antonio Road','MS UCUP02-206','Palo Alto','CA','94303','USA','13213761071');
+('AA','202cb962ac59075b964b07152d234b70',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+('j2ee','e10adc3949ba59abbe56e057f20f883e','yourname@yourdomain.com','j2ee','XYX',NULL,'901 San Antonio Road','MS UCUP02-206','Palo Alto','CA','94303','USA','123');
 
 /*Table structure for table `bannerdata` */
 
@@ -59,11 +59,11 @@ CREATE TABLE `bannerdata` (
 /*Data for the table `bannerdata` */
 
 insert  into `bannerdata`(`favcategory`,`bannername`) values 
-('BIRDS','<image src=\"../images/banner_birds.gif\">'),
-('CATS','<image src=\"../images/banner_cats.gif\">'),
-('DOGS','<image src=\"../images/banner_dogs.gif\">'),
-('FISH','<image src=\"../images/banner_fish.gif\">'),
-('REPTILES','<image src=\"../images/banner_reptiles.gif\">');
+('BIRDS','<image src=\"../../images/banner_birds.gif\">'),
+('CATS','<image src=\"../../images/banner_cats.gif\">'),
+('DOGS','<image src=\"../../images/banner_dogs.gif\">'),
+('FISH','<image src=\"../../images/banner_fish.gif\">'),
+('REPTILES','<image src=\"../../images/banner_reptiles.gif\">');
 
 /*Table structure for table `cartitem` */
 
@@ -115,8 +115,6 @@ CREATE TABLE `inventory` (
 /*Data for the table `inventory` */
 
 insert  into `inventory`(`itemid`,`qty`) values 
-('1111',0),
-('123',10),
 ('EST-1',54),
 ('EST-10',10000),
 ('EST-11',9998),
@@ -172,8 +170,6 @@ CREATE TABLE `item` (
 /*Data for the table `item` */
 
 insert  into `item`(`itemid`,`productid`,`listprice`,`unitcost`,`supplier`,`status`,`attr1`,`attr2`,`attr3`,`attr4`,`attr5`) values 
-('1111','111',111.00,11.00,1,NULL,'1',NULL,NULL,NULL,NULL),
-('EST-1','111',16.50,10.00,2,'P','Very Large',NULL,NULL,NULL,NULL),
 ('EST-10','K9-DL-01',18.50,12.00,2,'P','Spotted Adult Female',NULL,NULL,NULL,NULL),
 ('EST-11','RP-SN-01',18.50,12.00,2,'P','Venomless',NULL,NULL,NULL,NULL),
 ('EST-12','RP-SN-01',18.50,12.00,2,'P','Rattleless',NULL,NULL,NULL,NULL),
@@ -188,7 +184,6 @@ insert  into `item`(`itemid`,`productid`,`listprice`,`unitcost`,`supplier`,`stat
 ('EST-20','FI-FW-02',5.50,2.00,1,'P','Adult Male',NULL,NULL,NULL,NULL),
 ('EST-21','FI-FW-02',5.29,1.00,1,'P','Adult Female',NULL,NULL,NULL,NULL),
 ('EST-22','K9-RT-02',135.50,100.00,1,'P','Adult Male',NULL,NULL,NULL,NULL),
-('EST-2233','111',22.00,2.00,2,NULL,'2',NULL,NULL,NULL,NULL),
 ('EST-23','K9-RT-02',145.49,100.00,1,'P','Adult Female',NULL,NULL,NULL,NULL),
 ('EST-24','K9-RT-02',255.50,92.00,1,'P','Adult Male',NULL,NULL,NULL,NULL),
 ('EST-25','K9-RT-02',325.29,90.00,1,'P','Adult Female',NULL,NULL,NULL,NULL),
@@ -212,17 +207,13 @@ CREATE TABLE `lineitem` (
   `linenum` int(11) NOT NULL,
   `itemid` varchar(10) NOT NULL,
   `quantity` int(11) NOT NULL,
-  `unitprice` decimal(10,2) NOT NULL,
+  `listprice` decimal(10,2) NOT NULL,
+  `descn` varchar(255) DEFAULT NULL,
+  `totalprice` decimal(10,2) DEFAULT NULL,
   PRIMARY KEY (`orderid`,`linenum`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `lineitem` */
-
-insert  into `lineitem`(`orderid`,`linenum`,`itemid`,`quantity`,`unitprice`) values 
-(1001,1001,'EST-14',1,58.50),
-(1001,1002,'EST-15',1,23.50),
-(1002,1003,'EST-15',2,23.50),
-(1002,1004,'EST-14',1,58.50);
 
 /*Table structure for table `log` */
 
@@ -438,12 +429,6 @@ CREATE TABLE `orderinfo` (
 
 /*Data for the table `orderinfo` */
 
-insert  into `orderinfo`(`orderid`,`linenum`) values 
-(1001,1001),
-(1001,1002),
-(1002,1003),
-(1002,1004);
-
 /*Table structure for table `orders` */
 
 DROP TABLE IF EXISTS `orders`;
@@ -481,10 +466,6 @@ CREATE TABLE `orders` (
 
 /*Data for the table `orders` */
 
-insert  into `orders`(`orderid`,`username`,`orderdate`,`shipaddress1`,`shipaddress2`,`shipcity`,`shipstate`,`shipzip`,`shipcountry`,`billaddress1`,`billaddress2`,`billcity`,`billstate`,`billzip`,`billcountry`,`courier`,`totalprice`,`billtofirstname`,`billtolastname`,`shiptofirstname`,`shiptolastname`,`creditcard`,`expirydate`,`cardtype`,`locale`,`status`,`timestamp`) values 
-(1001,'aaa','2022-04-09 14:03:53','CS','CSU','CS','HN','123456','CN','CS','CSU','CS','HN','123456','CN','UPS',82.00,'张','三','张','三','123456','2022-05-01','Visa','CSU','待发货','2022-04-09 14:03:53'),
-(1002,'aaa','2022-04-09 14:33:51','CS','CSU','CS','HN','123456','CN','CS','CSU','CS','HN','123456','CN','UPS',105.50,'张','三','张','三','123456','2022-05-01','Visa','CSU','待发货','2022-04-09 14:33:51');
-
 /*Table structure for table `product` */
 
 DROP TABLE IF EXISTS `product`;
@@ -504,24 +485,22 @@ CREATE TABLE `product` (
 /*Data for the table `product` */
 
 insert  into `product`(`productid`,`category`,`name`,`descn`,`image`) values 
-('111','BIRDS','1111','222222',NULL),
-('AV-CB-01','BIRDS','Amazon Parrot','Great companion for 75 years','../images/bird2.gif'),
-('AV-SB-02','BIRDS','Finch','Great stress reliever','../images/bird1.gif'),
-('FI-FW-01','FISH','Koi','Fresh Water fish from Japan','../images/fish3.gif'),
-('FI-FW-02','FISH','Goldfish','Fresh Water fish from China','../images/fish2.gif'),
-('FI-SW-01','FISH','Angelfish','Salt Water fish from Australia','../images/fish1.gif'),
-('FI-SW-02','FISH','Tiger Shark','Salt Water fish from Australia','../images/fish4.gif'),
-('FL-DLH-02','CATS','Persian','Friendly house cat, doubles as a princess','../images/cat1.gif'),
-('FL-DSH-01','CATS','Manx','Great for reducing mouse populations','../images/cat1.gif'),
-('K9-BD-01','DOGS','Bulldog','Friendly dog from England','../images/dog2.gif'),
-('K9-CW-01','DOGS','Chihuahua','Great companion dog','../images/dog4.gif'),
-('K9-DL-01','DOGS','Dalmation','Great dog for a Fire Station','../images/dog5.gif'),
-('K9-PO-02','DOGS','Poodle','Cute dog from France','../images/dog6.gif'),
-('K9-RT-01','DOGS','Golden Retriever','Great family dog','../images/dog1.gif'),
-('K9-RT-02','DOGS','Labrador Retriever','Great hunting dog','../images/dog5.gif'),
-('RP-LI-02','REPTILES','Iguana','Friendly green friend','../images/lizard1.gif'),
-('RP-SN-01','REPTILES','Rattlesnake','Doubles as a watch dog','../images/lizard1.gif'),
-('TEST','BIRDS','Hello','123456',NULL);
+('AV-CB-01','BIRDS','Amazon Parrot','Great companion for 75 years','../../images/bird2.gif'),
+('AV-SB-02','BIRDS','Finch','Great stress reliever','../../images/bird1.gif'),
+('FI-FW-01','FISH','Koi','Fresh Water fish from Japan','../../images/fish3.gif'),
+('FI-FW-02','FISH','Goldfish','Fresh Water fish from China','../../images/fish2.gif'),
+('FI-SW-01','FISH','Angelfish','Salt Water fish from Australia','../../images/fish1.gif'),
+('FI-SW-02','FISH','Tiger Shark','Salt Water fish from Australia','../../images/fish4.gif'),
+('FL-DLH-02','CATS','Persian','Friendly house cat, doubles as a princess','../../images/cat1.gif'),
+('FL-DSH-01','CATS','Manx','Great for reducing mouse populations','../../images/cat1.gif'),
+('K9-BD-01','DOGS','Bulldog','Friendly dog from England','../../images/dog2.gif'),
+('K9-CW-01','DOGS','Chihuahua','Great companion dog','../../images/dog4.gif'),
+('K9-DL-01','DOGS','Dalmation','Great dog for a Fire Station','../../images/dog5.gif'),
+('K9-PO-02','DOGS','Poodle','Cute dog from France','../../images/dog6.gif'),
+('K9-RT-01','DOGS','Golden Retriever','Great family dog','../../images/dog1.gif'),
+('K9-RT-02','DOGS','Labrador Retriever','Great hunting dog','../../images/dog5.gif'),
+('RP-LI-02','REPTILES','Iguana','Friendly green friend','../../images/lizard1.gif'),
+('RP-SN-01','REPTILES','Rattlesnake','Doubles as a watch dog','../../images/lizard1.gif');
 
 /*Table structure for table `profile` */
 
@@ -542,10 +521,7 @@ insert  into `profile`(`userid`,`langpref`,`favcategory`,`mylistopt`,`banneropt`
 ('123',NULL,NULL,NULL,NULL),
 ('22',NULL,NULL,NULL,NULL),
 ('23',NULL,NULL,NULL,NULL),
-('3',NULL,NULL,NULL,NULL),
-('a','japanese','DOGS',NULL,NULL),
-('aaa','English','DOGS',1,1),
-('ACID','english','CATS',1,1),
+('AA',NULL,NULL,0,0),
 ('j2ee','Chinese','BIRDS',1,1);
 
 /*Table structure for table `sequence` */
@@ -561,8 +537,8 @@ CREATE TABLE `sequence` (
 /*Data for the table `sequence` */
 
 insert  into `sequence`(`name`,`nextid`) values 
-('linenum',1004),
-('ordernum',1002);
+('linenum',1000),
+('ordernum',1000);
 
 /*Table structure for table `signon` */
 
@@ -580,7 +556,8 @@ insert  into `signon`(`username`,`password`) values
 ('123','e10adc3949ba59abbe56e057f20f883e'),
 ('22','e10adc3949ba59abbe56e057f20f883e'),
 ('23','e10adc3949ba59abbe56e057f20f883e'),
-('aaa','123');
+('AA','202cb962ac59075b964b07152d234b70'),
+('j2ee','e10adc3949ba59abbe56e057f20f883e');
 
 /*Table structure for table `supplier` */
 
