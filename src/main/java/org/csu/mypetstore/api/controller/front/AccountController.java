@@ -248,8 +248,6 @@ public class AccountController {
         loginAccount.setListOption(listOption);
         loginAccount.setBannerOption(bannerOption);
 
-        System.out.println(loginAccount);
-
         CommonResponse<AccountVO> response = accountService.updateAccount(loginAccount);
         if(response.isSuccess())
             session.setAttribute("login_account", response.getData());

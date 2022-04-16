@@ -57,6 +57,9 @@ public class AccountServiceImpl implements AccountService {
     //更新账号信息
     @Override
     public CommonResponse<AccountVO> updateAccount(AccountVO accountVO) {
+        //更新accountVO的bannerName
+        accountVO.setBannerName(bannerDataMapper.selectById(accountVO.getFavouriteCategoryId()).getBannerName());
+
         //首先将AccountVO转成Account、Profile、BannerData
         Account account = new Account();
         Profile profile = new Profile();
