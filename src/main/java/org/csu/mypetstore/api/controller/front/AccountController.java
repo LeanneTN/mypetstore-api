@@ -192,6 +192,8 @@ public class AccountController {
         //验证码正确再进行下一步操作
         if(token.equals(code)){
             CommonResponse<AccountVO> response = accountService.insertAccount(username, passwordMD5);
+            //将账号放到session中
+            session.setAttribute("login_account", response.getData());
             return response;
         }else{
             return CommonResponse.createForError(ResponseCode.CODE_ERROR.getCode(), "验证码错误！");
