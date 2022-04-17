@@ -37,11 +37,68 @@ public class CartServiceImpl implements CartService {
         queryWrapper.eq("buyername", username);
         List<CartItem> cartItemList = cartItemMapper.selectList(queryWrapper);
         if(cartItemList.isEmpty())
-            return CommonResponse.createForSuccessMessage("购物车为空");
+            return CommonResponse.createForSuccess(new CartVO());
 
         CartVO cartVO = new CartVO();
         cartVO.setItemList(cartItemList);
         return CommonResponse.createForSuccess(cartVO);
+    }
+
+    @Override
+    public CommonResponse<CartVO> changeChecked(String username, String itemId, boolean checked) {
+        QueryWrapper<CartItem> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("itemId", itemId);
+        queryWrapper.eq("buyerName", username);
+        CartItem cartItem = cartItemMapper.selectOne(queryWrapper);
+
+        if(cartItem != null){
+            cartItem.setChecked(checked);
+            cartItemMapper.update(cartItem, queryWrapper);
+            return CommonResponse.createForSuccess(getCart(username).getData());
+        }
+        else{
+            return CommonResponse.createForError("失败！");
+        }
+    }
+
+    @Override
+    public CommonResponse<CartVO> checkAll(String username, boolean checked) {
+        QueryWrapper<CartItem> listQueryWrapper = new QueryWrapper<>();
+        listQueryWrapper.eq("buyerName", username);
+        List<CartItem> cartItemList = cartItemMapper.selectList(listQueryWrapper);
+        int len = cartItemList.size();
+
+        for(int i = 0;i < len;i++){
+            CartItem cartItem = cartItemList.get(i);
+            QueryWrapper<CartItem> itemQueryWrapper = new QueryWrapper<>();
+            itemQueryWrapper.eq("buyerName", username);
+            itemQueryWrapper.eq("itemId", cartItem.getItemId());
+            cartItem.setChecked(checked);
+            cartItemMapper.update(cartItem, itemQueryWrapper);
+        }
+        return CommonResponse.createForSuccess(getCart(username).getData());
+    }
+
+    @Override
+    public CommonResponse<CartVO> removeChecked(String username) {
+        QueryWrapper<CartItem> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("buyerName", username);
+        queryWrapper.eq("checked", 1);
+        int result = cartItemMapper.delete(queryWrapper);
+        if(result > 0){
+            return CommonResponse.createForSuccess(getCart(username).getData());
+        }else {
+            return CommonResponse.createForError("出错！");
+        }
+    }
+
+    @Override
+    public CommonResponse<List<CartItem>> checkout(String username) {
+        QueryWrapper<CartItem> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("buyerName", username);
+        queryWrapper.eq("checked", 1);
+        List<CartItem> cartItemList = cartItemMapper.selectList(queryWrapper);
+        return CommonResponse.createForSuccess(cartItemList);
     }
 
     //向购物车添加商品
@@ -96,6 +153,7 @@ public class CartServiceImpl implements CartService {
             return removeCartItem(username, itemId);
 
         cartItem.setQuantity(quantity);
+        cartItem.setTotalPrice(cartItem.getListPrice().multiply(new BigDecimal(quantity)));
         cartItemMapper.update(cartItem, queryWrapper);
         return getCart(username);
     }
@@ -110,8 +168,12 @@ public class CartServiceImpl implements CartService {
     public CartItem itemVOToCartItem(ItemVO itemVO, String buyerName){
         CartItem cartItem = new CartItem();
 
+        cartItem.setChecked(true);
         cartItem.setItemId(itemVO.getItemId());
         cartItem.setProductId(itemVO.getProductId());
+        cartItem.setImage(itemVO.getImage());
+        cartItem.setAttr1(itemVO.getAttribute1());
+        cartItem.setName(itemVO.getName());
         cartItem.setDescn(itemVO.getDescription());
         cartItem.setInStock(itemVO.getQuantity()>0 ? true : false);
         cartItem.setQuantity(1);

@@ -163,14 +163,19 @@ public class AccountController {
         //MD5
         String passwordMD5 = DigestUtils.md5DigestAsHex(password.getBytes(StandardCharsets.UTF_8));
 
+
         //验证码正确再进行下一步操作
-        if(token.equals(code)){
-            CommonResponse<AccountVO> response = accountService.getAccount(username, passwordMD5);
-            if(response.isSuccess())
-                session.setAttribute("login_account", response.getData());
-            return response;
-        }else{
-            return CommonResponse.createForError(ResponseCode.CODE_ERROR.getCode(), "验证码错误！");
+        try {
+            if(token.equals(code)){
+                CommonResponse<AccountVO> response = accountService.getAccount(username, passwordMD5);
+                if(response.isSuccess())
+                    session.setAttribute("login_account", response.getData());
+                return response;
+            }else{
+                return CommonResponse.createForError(ResponseCode.CODE_ERROR.getCode(), "验证码错误！");
+            }
+        } catch (Exception e) {
+            return CommonResponse.createForError(ResponseCode.CODE_ERROR.getCode(), "您未请求验证码！");
         }
     }
 
