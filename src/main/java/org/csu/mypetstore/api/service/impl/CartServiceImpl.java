@@ -159,9 +159,10 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void clearCart(String username) {
+    public void clearCartChecked(String username) {
         QueryWrapper<CartItem> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("buyerName", username);
+        queryWrapper.eq("checked", 1);
         cartItemMapper.delete(queryWrapper);
     }
 

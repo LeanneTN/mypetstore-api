@@ -940,7 +940,7 @@
 
 -------
 
-### 3.移除已登录账号购物车中的商品
+### 3.移除已登录账号购物车中被选中的商品
 
 **Request**
 
@@ -1065,6 +1065,128 @@
       }
   }
   ```
+
+
+-------
+
+### 5.购物车商品全选或全不选
+
+**Request**
+
+- Method: **POST**
+
+- URL: **/cart/myCart/checkAll**
+
+- Parameters:
+
+  ```
+  {
+  	checked: true
+  }
+  ```
+
+**Response**
+
+- fail
+
+  ```
+  {
+      "status": 10,
+      "msg": "请先登录！"
+  }
+  ```
+
+  ```
+  {
+      "status": 1,
+      "msg": "购物车中没有商品!"
+  }
+  ```
+
+- success
+
+  ```
+  {
+  	"status":0,
+  	"data":{
+  		"itemList":[
+  			{
+  				"itemId":"EST-18",
+  				"productId":"AV-CB-01",
+  				"image":"../../images/bird2.gif",
+  				"attr1":"Adult Male",
+  				"name":"Amazon Parrot",
+  				"descn":"Great companion for 75 years",
+  				"checked":false,
+  				"inStock":true,
+  				"quantity":1,
+  				"listPrice":193.50,
+  				"totalPrice":193.50,
+  				"buyerName":"j2ee"
+  			}
+  		],
+  		"subTotal":193.50
+  	}
+  }
+  ```
+  -------
+
+### 6.结算并返回被选中的商品
+
+**Request**
+
+- Method: **POST**
+
+- URL: **/cart/myCart/checkAll**
+
+- Parameters:
+
+  ```
+  {
+  
+  }
+  ```
+
+**Response**
+
+- fail
+
+  ```
+  {
+      "status": 10,
+      "msg": "请先登录！"
+  }
+  ```
+
+  ```
+  {
+      "status": 1,
+      "msg": "购物车中没有商品被选中!"
+  }
+  ```
+
+- success
+
+  ```
+  {
+  	"status":0,
+  	"data":[
+  		{
+  			"itemId":"EST-18",
+  			"productId":"AV-CB-01",
+  			"image":"../../images/bird2.gif",
+  			"attr1":"Adult Male",
+  			"name":"Amazon Parrot",
+  			"descn":"Great companion for 75 years",
+  			"checked":true,
+  			"inStock":true,
+  			"quantity":1,
+  			"listPrice":193.50,
+  			"totalPrice":193.50,
+  			"buyerName":"j2ee"
+  		}
+  	]
+  }
 
 
 ------
@@ -1382,7 +1504,86 @@
   ```
 
 -------
-### 5.支付
+### 5.火区OrderVO的List
+
+**Request**
+
+- Method: **GET**
+
+- URL: **/order/orders/{orderId}/items**
+
+- Parameters:
+
+  ```
+  
+  ```
+
+**Response**
+
+- fail
+
+  ```
+  {
+      "status": 10,
+      "msg": "请先登录！"
+  }
+  ```
+
+- success
+
+  ```
+  {
+  	"status":0,
+  	"data":[{
+  		"order":{
+  			"orderId":1002,
+  			"username":"j2ee",
+  			"orderDate":"2022-04-18T14:23:05.000+00:00",
+  			"shipAddress1":"901 San Antonio Road",
+  			"shipAddress2":"MS UCUP02-206",
+  			"shipCity":"Palo Alto",
+  			"shipState":"CA",
+  			"shipZip":"94303",
+  			"shipCountry":"USA",
+  			"billAddress1":"901 San Antonio Road",
+  			"billAddress2":"MS UCUP02-206",
+  			"billCity":"Palo Alto",
+  			"billState":"CA",
+  			"billZip":"94303",
+  			"billCountry":"USA",
+  			"courier":"UPS",
+  			"totalPrice":34.00,
+  			"billToFirstName":"j2ee",
+  			"billToLastName":"XYX",
+  			"shipToFirstName":"j2ee",
+  			"shipToLastName":"XYX",
+  			"creditCard":"",
+  			"expiryDate":"",
+  			"cardType":"Visa",
+  			"locale":"CSU",
+  			"status":"待发货",
+  			"timestamp":"2022-04-18T14:23:05.000+00:00"
+  		},
+  		"firstLineItem":{
+  			"orderId":1002,
+  			"lineNumber":1002,
+  			"itemId":"EST-19",
+  			"quantity":1,
+  			"listPrice":15.50,
+  			"descn":"Great stress reliever",
+  			"totalPrice":15.50,
+  			"image":"../../images/bird1.gif",
+  			"attr1":"Adult Male",
+  			"name":"Finch"
+  		},
+  		"lineItemList":[],
+  		"len":1
+  	]}
+  }
+  ```
+
+-------
+### 6.支付
 
 **Request**
 

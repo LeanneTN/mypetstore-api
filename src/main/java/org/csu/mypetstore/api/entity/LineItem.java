@@ -26,4 +26,7 @@ public class LineItem {
     private String descn;
     @TableField(value = "totalprice")
     private BigDecimal totalPrice;
+    private String image;
+    private String attr1;
+    private String name;
 }

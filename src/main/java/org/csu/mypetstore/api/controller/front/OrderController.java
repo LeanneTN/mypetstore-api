@@ -9,6 +9,7 @@ import org.csu.mypetstore.api.service.CartService;
 import org.csu.mypetstore.api.service.OrderService;
 import org.csu.mypetstore.api.vo.AccountVO;
 import org.csu.mypetstore.api.vo.CartVO;
+import org.csu.mypetstore.api.vo.OrderVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -134,11 +135,22 @@ public class OrderController {
     @ResponseBody
     public CommonResponse<List<LineItem>> getLineItemsByOrderId(
             HttpSession session,
-            @PathVariable("orderId") String orderId){
+            @PathVariable("orderId") int orderId){
         AccountVO accountVO = (AccountVO)session.getAttribute("login_account");
         //判断是否登录
         if(accountVO == null)
             return CommonResponse.createForError(ResponseCode.NEED_LOGIN.getCode(), "请先登录！");
         return orderService.getLineItemsByOrderId(orderId, accountVO.getUsername());
+    }
+
+    //获取OrderVO的list
+    @GetMapping("orders/myOrders")
+    @ResponseBody
+    public CommonResponse<List<OrderVO>> getMyOrders(HttpSession session){
+        AccountVO accountVO = (AccountVO)session.getAttribute("login_account");
+        //判断是否登录
+        if(accountVO == null)
+            return CommonResponse.createForError(ResponseCode.NEED_LOGIN.getCode(), "请先登录！");
+        return orderService.getMyOrders(accountVO.getUsername());
     }
 }

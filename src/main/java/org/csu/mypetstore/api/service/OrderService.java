@@ -5,6 +5,7 @@ import org.csu.mypetstore.api.entity.CartItem;
 import org.csu.mypetstore.api.entity.LineItem;
 import org.csu.mypetstore.api.entity.Order;
 import org.csu.mypetstore.api.vo.CartVO;
+import org.csu.mypetstore.api.vo.OrderVO;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
@@ -19,5 +20,7 @@ public interface OrderService {
 
     public CommonResponse<Order> getOrderById(String orderId, String username);
 
-    public CommonResponse<List<LineItem>> getLineItemsByOrderId(String orderId, String username);
+    public CommonResponse<List<LineItem>> getLineItemsByOrderId(int orderId, String username);
+
+    public CommonResponse<List<OrderVO>> getMyOrders(String username);
 }
