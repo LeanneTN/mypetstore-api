@@ -21,14 +21,14 @@ import java.nio.charset.StandardCharsets;
 
 @RestController
 public class PayController {
-    @RequestMapping("/pay")
+    @RequestMapping("/pay/{totalPrice}/{orderId}/{billToFirstName}/{billAddress1}")
     public void payController(
             HttpServletRequest request,
             HttpServletResponse response,
-            @RequestParam("totalPrice") BigDecimal totalPrice,
-            @RequestParam("orderId") int orderId,
-            @RequestParam("billToFirstName") String billToFirstName,
-            @RequestParam("billAddress1") String billAddress1) throws IOException {
+            @PathVariable("totalPrice") BigDecimal totalPrice,
+            @PathVariable("orderId") int orderId,
+            @PathVariable("billToFirstName") String billToFirstName,
+            @PathVariable("billAddress1") String billAddress1) throws IOException {
         //获得初始化的AlipayClient
         AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.gatewayUrl, AlipayConfig.APP_ID, AlipayConfig.APP_PRIVATE_KEY, "json", AlipayConfig.CHARSET, AlipayConfig.ALIPAY_PUBLIC_KEY, AlipayConfig.sign_type);
 

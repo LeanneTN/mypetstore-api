@@ -18,7 +18,7 @@ public class AlipayConfig {
     public static String notify_url = "http://localhost/pay/fail.html";
 
     // 页面跳转同步通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问(其实就是支付成功后返回的页面)
-    public static String return_url = "http://localhost:8888/view/catalog-main";
+    public static String return_url = "http://localhost:8888/view/catalog/catalog-main.html";
 
     // 签名方式
     public static String sign_type = "RSA2";
