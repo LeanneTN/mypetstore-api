@@ -16,9 +16,11 @@ public class CartVO {
         int len = itemList.size();
         for (int i = 0;i < len;i ++){
             CartItem cartItem = itemList.get(i);
-            BigDecimal listPrice = cartItem.getListPrice();
-            BigDecimal quantity = new BigDecimal(String.valueOf(cartItem.getQuantity()));
-            subTotal = subTotal.add(listPrice.multiply(quantity));
+            if(cartItem.isChecked()){
+                BigDecimal listPrice = cartItem.getListPrice();
+                BigDecimal quantity = new BigDecimal(String.valueOf(cartItem.getQuantity()));
+                subTotal = subTotal.add(listPrice.multiply(quantity));
+            }
         }
         return subTotal;
     }

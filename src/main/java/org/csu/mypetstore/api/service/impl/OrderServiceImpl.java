@@ -49,7 +49,6 @@ public class OrderServiceImpl implements OrderService {
             if(cartItemList.get(i).isChecked()){
                 OrderInfo orderInfo = getOrderInfo(order.getOrderId());
                 LineItem lineItem = cartItemToLineItem(cartItemList.get(i), orderInfo);
-                System.out.println(lineItem);
                 orderInfoMapper.insert(orderInfo);
                 lineItemMapper.insert(lineItem);
             }
@@ -103,23 +102,28 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public CommonResponse<List<OrderVO>> getMyOrders(String username) {
         List<Order> orderList = getOrders(username).getData();
-        List<OrderVO> orderVOList = new ArrayList<>();
-        int len1 = orderList.size();
-        for(int i = 0;i < len1;i++){
-            OrderVO orderVO = new OrderVO();
-            orderVO.setOrder(orderList.get(i));
-            List<LineItem> allLineItems = getLineItemsByOrderId(orderList.get(i).getOrderId(), username).getData();
-            orderVO.setLen(allLineItems.size());
-            orderVO.setFirstLineItem(allLineItems.get(0));
-            int len2 = allLineItems.size();
-            List<LineItem> otherLineItems = new ArrayList<>();
-            for(int j = 1;j < len2;j++){
-                otherLineItems.add(allLineItems.get(j));
-            }
-            orderVO.setLineItemList(otherLineItems);
-            orderVOList.add(orderVO);
+        if(orderList == null){
+            return CommonResponse.createForSuccessMessage("订单为空");
         }
-        return CommonResponse.createForSuccess(orderVOList);
+        else {
+            List<OrderVO> orderVOList = new ArrayList<>();
+            int len1 = orderList.size();
+            for(int i = 0;i < len1;i++){
+                OrderVO orderVO = new OrderVO();
+                orderVO.setOrder(orderList.get(i));
+                List<LineItem> allLineItems = getLineItemsByOrderId(orderList.get(i).getOrderId(), username).getData();
+                orderVO.setLen(allLineItems.size());
+                orderVO.setFirstLineItem(allLineItems.get(0));
+                int len2 = allLineItems.size();
+                List<LineItem> otherLineItems = new ArrayList<>();
+                for(int j = 1;j < len2;j++){
+                    otherLineItems.add(allLineItems.get(j));
+                }
+                orderVO.setLineItemList(otherLineItems);
+                orderVOList.add(orderVO);
+            }
+            return CommonResponse.createForSuccess(orderVOList);
+        }
     }
 
     public OrderInfo getOrderInfo(int orderId){
