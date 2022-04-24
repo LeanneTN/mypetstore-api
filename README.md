@@ -1190,6 +1190,61 @@
 
 
 ------
+### 7.改变购物车商品的checked状态
+
+**Request**
+
+- Method: **POST**
+
+- URL: **/cart/myCart/changeChecked**
+
+- Parameters:
+
+  ```
+  {
+  	itemId,
+  	checked
+  }
+  ```
+
+**Response**
+
+- fail
+
+  ```
+  {
+      "status": 10,
+      "msg": "请先登录！"
+  }
+  ```
+
+- success
+
+  ```
+  {
+      "status": 0,
+      "data": {
+          "itemList": [
+              {
+                  "itemId": "EST-12",
+                  "productId": "RP-SN-01",
+                  "image": "../../images/lizard1.gif",
+                  "attr1": "Rattleless",
+                  "name": "Rattlesnake",
+                  "descn": "Doubles as a watch dog",
+                  "checked": true,
+                  "inStock": true,
+                  "quantity": 2,
+                  "listPrice": 18.5,
+                  "totalPrice": 37,
+                  "buyerName": "j2ee"
+              }
+          ],
+          "subTotal": 37
+      }
+  }
+
+
 
 ## Order
 
@@ -1504,7 +1559,7 @@
   ```
 
 -------
-### 5.获取OrderVO的List
+### 5.火区OrderVO的List
 
 **Request**
 
