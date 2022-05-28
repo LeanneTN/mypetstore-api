@@ -4,6 +4,7 @@ import org.csu.mypetstore.api.common.CommonResponse;
 import org.csu.mypetstore.api.entity.Category;
 import org.csu.mypetstore.api.entity.Product;
 import org.csu.mypetstore.api.service.CatalogService;
+import org.csu.mypetstore.api.vo.CategoryVO;
 import org.csu.mypetstore.api.vo.ItemVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,10 +13,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/catalog/")
+@RequestMapping("/api/catalog/")
 public class CategoryController {
     @Autowired
     private CatalogService catalogService;
+
+    @GetMapping("all_category")
+    @ResponseBody
+    public CommonResponse<List<CategoryVO>> getAllCategory(){
+        return catalogService.getAllCategory();
+    }
 
     @GetMapping("categories")
     @ResponseBody

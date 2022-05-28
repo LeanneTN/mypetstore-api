@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
-@RequestMapping("/cart/")
+@RequestMapping("/api/cart/")
 public class CartController {
     @Autowired
     private CartService cartService;

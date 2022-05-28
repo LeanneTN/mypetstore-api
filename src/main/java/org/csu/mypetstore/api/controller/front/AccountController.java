@@ -26,7 +26,7 @@ import java.util.Random;
 import static com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY;
 
 @Controller
-@RequestMapping("/user/")
+@RequestMapping("/api/user/")
 public class AccountController {
     @Autowired
     private AccountService accountService;

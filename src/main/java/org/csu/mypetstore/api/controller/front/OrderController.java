@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
-@RequestMapping("/order/")
+@RequestMapping("/api/order/")
 public class OrderController {
     @Autowired
     private OrderService orderService;

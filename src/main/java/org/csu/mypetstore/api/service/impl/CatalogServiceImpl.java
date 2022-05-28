@@ -14,7 +14,9 @@ import org.csu.mypetstore.api.persistence.ItemInventoryMapper;
 import org.csu.mypetstore.api.persistence.ItemMapper;
 import org.csu.mypetstore.api.persistence.ProductMapper;
 import org.csu.mypetstore.api.service.CatalogService;
+import org.csu.mypetstore.api.vo.CategoryVO;
 import org.csu.mypetstore.api.vo.ItemVO;
+import org.csu.mypetstore.api.vo.ProductVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +34,19 @@ public class CatalogServiceImpl implements CatalogService {
     private ProductMapper productMapper;
     @Autowired
     private ItemInventoryMapper itemInventoryMapper;
+
+    @Override
+    public CommonResponse<List<CategoryVO>> getAllCategory() {
+        List<CategoryVO> categoryVOList = new ArrayList<>();
+        CommonResponse<List<Category>> response = getCategoryList();
+        int len1 = response.getData().size();
+        for(int i = 0;i < len1;i++){
+            CategoryVO categoryVO = categoryToCategoryVO(response.getData().get(i));
+            categoryVOList.add(categoryVO);
+        }
+
+        return CommonResponse.createForSuccess(categoryVOList);
+    }
 
     @Override
     public CommonResponse<List<Category>> getCategoryList() {
@@ -136,5 +151,36 @@ public class CatalogServiceImpl implements CatalogService {
 
         return itemVO;
     }
+
+    private CategoryVO categoryToCategoryVO(Category category){
+        CategoryVO categoryVO = new CategoryVO();
+        categoryVO.setCategoryId(category.getCategoryId());
+        categoryVO.setName(category.getName());
+        categoryVO.setDescription(category.getDescription());
+
+        CommonResponse<List<Product>> response = getProductListById(category.getCategoryId());
+        List<ProductVO> productVOList = new ArrayList<>();
+        int len = response.getData().size();
+        for(int i = 0;i < len;i++){
+            productVOList.add(productToProductVO(response.getData().get(i)));
+        }
+
+        categoryVO.setProductVOList(productVOList);
+
+        return categoryVO;
+    }
+
+    private ProductVO productToProductVO(Product product){
+        ProductVO productVO = new ProductVO();
+        productVO.setProductId(product.getProductId());
+        productVO.setDescription(product.getDescription());
+        productVO.setImage(product.getImage());
+        productVO.setName(product.getName());
+        productVO.setCategoryId(product.getCategoryId());
+        productVO.setItemVOList(getItemListById(product.getProductId()).getData());
+
+        return productVO;
+    }
+
 
 }
