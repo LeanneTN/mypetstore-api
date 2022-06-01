@@ -21,4 +21,13 @@ public class AccountVO {
     private boolean listOption;
     private boolean bannerOption;
     private String bannerName;
+
+    //将accountVO转化成ChatUserVO
+    public ChatUserVO toChatUserVO(){
+        ChatUserVO chatUserVO = new ChatUserVO();
+        chatUserVO.setAvatar("");
+        chatUserVO.setId(this.username);
+        chatUserVO.setDisplayName(this.username);
+        return chatUserVO;
+    }
 }
