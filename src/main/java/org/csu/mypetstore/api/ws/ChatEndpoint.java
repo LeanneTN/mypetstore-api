@@ -1,5 +1,6 @@
 package org.csu.mypetstore.api.ws;
 
+import org.csu.mypetstore.api.config.WebSocketMessageVODecoder;
 import org.csu.mypetstore.api.config.WebSocketMessageVOEncoding;
 import org.csu.mypetstore.api.vo.AccountVO;
 import org.csu.mypetstore.api.vo.ChatUserVO;
@@ -14,7 +15,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-@ServerEndpoint(value = "/api/chat", encoders = WebSocketMessageVOEncoding.class, configurator = GetHttpSessionConfigurator.class)
+@ServerEndpoint(value = "/api/chat", decoders = WebSocketMessageVODecoder.class,encoders = WebSocketMessageVOEncoding.class, configurator = GetHttpSessionConfigurator.class)
 @Component
 public class ChatEndpoint {
 
@@ -50,8 +51,17 @@ public class ChatEndpoint {
 
 
     @OnMessage
-    public void onMessage(String message, Session session){
+    public void onMessage(MessageVO message, Session session){
         //接收到消息时调用
+        System.out.println(message);
+        //判断消息类型
+        if(message.getToContactId().equals("group")){
+            //是群发消息，将该消息转发给所有用户
+            sendMessageTOGroup(message, message.getFromUser());
+        }else{
+            //是私法消息，将消息转发给指定的用户
+            sendMessageToOne(message, message.getToContactId());
+        }
     }
 
     @OnClose
@@ -70,18 +80,7 @@ public class ChatEndpoint {
         List<ContactDataVO> contactDataVOList = new ArrayList<>();
         contactDataVOList.add(contactDataVO);
         MessageVO messageVO = broadCastMessage(contactDataVOList);
-        try {
-            Set<ChatUserVO> chatUsers = onlineUsers.keySet();
-            for (ChatUserVO chatUser : chatUsers){
-                //如果是其他用户，就发送消息
-                if(!chatUser.getId().equals(chatUserVO.getId())){
-                    ChatEndpoint chatEndpoint = onlineUsers.get(chatUser);
-                    chatEndpoint.session.getBasicRemote().sendObject(messageVO);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        sendMessageTOGroup(messageVO, chatUserVO);
     }
 
     //向某个用户发送其他在线用户的信息
@@ -116,5 +115,38 @@ public class ChatEndpoint {
         messageVO.setFromUser(null);
 
         return messageVO;
+    }
+
+    //向其他所有用户发送一条消息
+    public void sendMessageTOGroup(MessageVO messageVO, ChatUserVO sender){
+        try {
+            Set<ChatUserVO> chatUsers = onlineUsers.keySet();
+            for (ChatUserVO chatUser : chatUsers){
+                //如果是其他用户，就发送消息
+                if(!chatUser.getId().equals(sender.getId())){
+                    ChatEndpoint chatEndpoint = onlineUsers.get(chatUser);
+                    chatEndpoint.session.getBasicRemote().sendObject(messageVO);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //向某个用户发送消息
+    public void sendMessageToOne(MessageVO messageVO, String toContactId){
+        try {
+            Set<ChatUserVO> chatUsers = onlineUsers.keySet();
+            for (ChatUserVO chatUser : chatUsers){
+                //如果是接收用户，就发送消息(注意私聊要对消息做一定变化)
+                if(chatUser.getId().equals(toContactId)){
+                    messageVO.setToContactId(messageVO.getFromUser().getId());
+                    ChatEndpoint chatEndpoint = onlineUsers.get(chatUser);
+                    chatEndpoint.session.getBasicRemote().sendObject(messageVO);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
